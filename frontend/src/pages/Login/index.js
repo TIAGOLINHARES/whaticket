@@ -1,25 +1,40 @@
 import React, { useState, useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
+
 import {
   Avatar,
   Button,
   CssBaseline,
   TextField,
   Grid,
+  Box,
   Typography,
   Container,
   InputAdornment,
   IconButton,
   Link
 } from '@material-ui/core';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+
+import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
+
 import { makeStyles } from "@material-ui/core/styles";
+
 import { i18n } from "../../translate/i18n";
+
 import { AuthContext } from "../../context/Auth/AuthContext";
 
-//import loginBackground from "../../assets/bg.jpg";
-import chatImage from "../../assets/logo.png";
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+// const Copyright = () => {
+// 	return (
+// 		<Typography variant="body2" color="textSecondary" align="center">
+// 			{"Copyleft "}
+// 			<Link color="inherit" href="https://github.com/canove">
+// 				Canove
+// 			</Link>{" "}
+// 			{new Date().getFullYear()}
+// 			{"."}
+// 		</Typography>
+// 	);
+// };
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,19 +42,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: theme.spacing(2),
-    borderRadius: theme.spacing(2),
-    //backgroundColor: `rgba(${theme.palette.background.paper}, 0.8)`,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)",
-
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
-  },
-  whatsapp: {
-    backgroundColor: '#32d951'
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -47,32 +53,6 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
-  containerWrapper: {
-    display: "flex",
-    justifyContent: "space-between",
-    gap: theme.spacing(4),
-  },
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-  },
-  mobileContainer: {
-    flex: 1,
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    minHeight: '100vh'
-  },
-  hideOnMobile: {
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    minHeight: '100vh',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
   },
 }));
 
@@ -88,99 +68,85 @@ const Login = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handlSubmit = (e) => {
     e.preventDefault();
     handleLogin(user);
   };
 
   return (
-    <div style={{ display: 'flex', 
-      flexDirection: 'column', 
-      minHeight: '100vh', 
-      // backgroundImage: `url(${loginBackground})`,
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center'
-    }}>
-      <Container component="main" maxWidth="md">
-        <CssBaseline />
-        <div className={classes.containerWrapper}>
-          <Container component="div" maxWidth="xs" className={`${classes.mobileContainer} ${classes.hideOnMobile}`}>
-            <img src={chatImage} style={{width:'70%'}} alt={process.env.REACT_APP_TITLE} />
-          </Container>
-          <Container component="div" maxWidth="xs" className={classes.mobileContainer}>
-            <div className={classes.paper}>
-              <Avatar className={classes.whatsapp}>
-                <WhatsAppIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                {i18n.t("login.title")}
-              </Typography>
-              <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label={i18n.t("login.form.email")}
-                  name="email"
-                  value={user.email}
-                  onChange={handleChangeInput}
-                  autoComplete="email"
-                  autoFocus
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label={i18n.t("login.form.password")}
-                  id="password"
-                  value={user.password}
-                  onChange={handleChangeInput}
-                  autoComplete="current-password"
-                  type={showPassword ? 'text' : 'password'}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={() => setShowPassword((e) => !e)}
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  {i18n.t("login.buttons.submit")}
-                </Button>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <Link
-                      variant="body2"
-                      component={RouterLink}
-                      to="/signup"
-                    >
-                      {i18n.t("login.buttons.register")}
-                    </Link>
-                  </Grid>
-                </Grid>
-              </form>
-            </div>
-          </Container>       
-        </div>
-      </Container>
-    </div>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlined />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          {i18n.t("login.title")}
+        </Typography>
+        <form className={classes.form} noValidate onSubmit={handlSubmit}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label={i18n.t("login.form.email")}
+            name="email"
+            value={user.email}
+            onChange={handleChangeInput}
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label={i18n.t("login.form.password")}
+            id="password"
+            value={user.password}
+            onChange={handleChangeInput}
+            autoComplete="current-password"
+            type={showPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword((e) => !e)}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            {i18n.t("login.buttons.submit")}
+          </Button>
+          <Grid container>
+            <Grid item>
+              <Link
+                href="#"
+                variant="body2"
+                component={RouterLink}
+                to="/signup"
+              >
+                {i18n.t("login.buttons.register")}
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+      <Box mt={8}>{/* <Copyright /> */}</Box>
+    </Container>
   );
 };
 
